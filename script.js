@@ -20,29 +20,37 @@ function addGoal() {
 function createGoalElement(text, progress, notes) {
     const li = document.createElement("li");
     li.innerHTML = `
-        <span>${text}</span>
-        <button class="delete-btn">🗑</button>
-        <button class="toggle-progress-btn">Voortgang tonen</button>
-        
-        <input type="range" min="0" max="100" value="${progress}" class="progress-slider hidden">
-        <div class="progress-container">
-            <div class="progress-bar" style="width: ${progress}%"></div>
-        </div>
-        <p>${progress}% voltooid</p>
-        
-        <textarea class="notes" placeholder="Schrijf hier aantekeningen...">${notes}</textarea>
-    `;
+<span>${text}</span>
+<button class="delete-btn">🗑</button>
+<button class="toggle-progress-btn">Voortgang tonen</button>
+
+<input type="range" min="0" max="100" value="${progress}" class="progress-slider hidden">
+<div class="progress-container">
+    <div class="progress-bar" style="width: ${progress}%"></div>
+</div>
+<p>${progress}% voltooid</p>
+
+<button class="toggle-notes-btn">Toon aantekeningen</button>
+<textarea class="notes note-hidden" placeholder="Schrijf hier aantekeningen...">${notes}</textarea>
+`;
 
     const progressBar = li.querySelector(".progress-bar");
     const progressText = li.querySelector("p");
     const slider = li.querySelector(".progress-slider");
-    const toggleButton = li.querySelector(".toggle-progress-btn");
+    const toggleProgressBtn = li.querySelector(".toggle-progress-btn");
+    const toggleNotesBtn = li.querySelector(".toggle-notes-btn");
     const notesField = li.querySelector(".notes");
 
-    // Voortgang tonen/verbergen
-    toggleButton.addEventListener("click", () => {
+    // Toggle voortgang
+    toggleProgressBtn.addEventListener("click", () => {
         slider.classList.toggle("hidden");
-        toggleButton.textContent = slider.classList.contains("hidden") ? "Voortgang tonen" : "Verberg voortgang";
+        toggleProgressBtn.textContent = slider.classList.contains("hidden") ? "Voortgang tonen" : "Verberg voortgang";
+    });
+
+    // Toggle aantekeningen
+    toggleNotesBtn.addEventListener("click", () => {
+        notesField.classList.toggle("note-hidden");
+        toggleNotesBtn.textContent = notesField.classList.contains("note-hidden") ? "Toon aantekeningen" : "Verberg aantekeningen";
     });
 
     // Update progress
@@ -60,7 +68,7 @@ function createGoalElement(text, progress, notes) {
         }
     });
 
-    // Notities opslaan bij wijziging
+    // Notities opslaan
     notesField.addEventListener("input", () => {
         updateGoal(text, slider.value, notesField.value);
     });
@@ -73,6 +81,7 @@ function createGoalElement(text, progress, notes) {
 
     return li;
 }
+
 
 // Opslaan in localStorage
 function saveGoal(goal, progress, notes) {
@@ -105,3 +114,4 @@ function removeGoal(goalText) {
     goals = goals.filter(goal => goal.text !== goalText);
     localStorage.setItem("goals", JSON.stringify(goals));
 }
+

@@ -121,3 +121,7 @@ textarea {
     border-radius: 5px;
     resize: vertical;
 }
+
+.note-hidden {
+    display: none;
+}
