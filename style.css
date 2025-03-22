@@ -1,127 +1,272 @@
 body {
     font-family: Arial, sans-serif;
+    background: #f4f4f4;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
-}
+    padding: 40px;
+  }
+  
 
+/* Container */
 .container {
     background: white;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
+  }
+  
+  /* Titel */
+  h1 {
     text-align: center;
-}
-
-h1 {
-    margin-bottom: 10px;
-}
-
-.input-container {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Input + button naast elkaar */
+  .input-row {
     display: flex;
     gap: 10px;
-}
-
-input {
+    margin-bottom: 20px;
+  }
+  
+  .input-row input {
     flex: 1;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-button {
-    padding: 8px 12px;
-    border: none;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .input-row button {
+    padding: 10px 16px;
     background: #28a745;
     color: white;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
+  }
+  
+  .input-row button:hover {
     background: #218838;
-}
-
-ul {
+  }
+  
+  /* Doelenlijst */
+  ul {
     list-style: none;
     padding: 0;
-    margin-top: 20px;
-}
-
-li {
+  }
+  
+  li {
     background: #f8f9fa;
-    padding: 15px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 10px;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
     position: relative;
-}
-
-.completed {
-    text-decoration: line-through;
-    color: gray;
-}
-
-.delete-btn {
+  }
+  
+  /* Titel & delete button */
+  li strong {
+    display: inline-block;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+  
+  .delete-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
     background: red;
     color: white;
     border: none;
-    padding: 5px;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
     cursor: pointer;
-    border-radius: 5px;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-}
-
-.delete-btn:hover {
+  }
+  
+  .delete-btn:hover {
     background: darkred;
-}
-
-/* Progress bar styling */
-.progress-container {
+  }
+  
+  /* Voortgang */
+  .progress-slider {
     width: 100%;
-    background: #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-    height: 15px;
     margin-top: 10px;
-}
-
-.progress-bar {
+  }
+  
+  .progress-container {
+    background: #ccc;
+    border-radius: 10px;
+    height: 12px;
+    margin: 10px 0;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
     height: 100%;
-    background: #28a745;
+    background-color: #28a745;
     width: 0%;
     transition: width 0.3s ease;
-}
-
-/* Slider styling */
-input[type="range"] {
+  }
+  
+  /* Knoppen */
+  .toggle-notes-btn,
+  .toggle-progress-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .toggle-notes-btn:hover,
+  .toggle-progress-btn:hover {
+    background: #218838;
+  }
+  
+  textarea.notes {
     width: 100%;
-    margin-top: 5px;
-}
-
-/* Verberg standaard de progress-slider */
-.hidden {
-    display: none;
-}
-
-/* Notitieveld styling */
-textarea {
-    width: 100%;
-    height: 50px;
+    height: 60px;
     margin-top: 10px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 6px;
     resize: vertical;
-}
-
-.note-hidden {
+  }
+  
+  .hidden {
     display: none;
-}
+  }
+  
+
+  /* Titel */
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Input + knop naast elkaar */
+  .input-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .input-row input {
+    flex: 1;
+    max-width: 250px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  .input-row button {
+    padding: 10px 16px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .input-row button:hover {
+    background: #218838;
+  }
+  
+  /* Lijst met categorieknoppen */
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .card-list button {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .card-list button:hover {
+    background: #0056b3;
+  }
+  
+
+  .progress-wrapper.hidden {
+    display: none;
+  }
+  
+  .progress-container {
+    background: #ccc;
+    border-radius: 10px;
+    height: 12px;
+    margin: 10px 0;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #28a745;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  .progress-slider-wrapper.hidden {
+    display: none;
+  }
+  
+  .toggle-progress-btn {
+    display: block;
+    margin: 10px 0;
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .toggle-progress-btn:hover {
+    background: #218838;
+  }
+  
+  .back-button {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  
+  .back-button:hover {
+    text-decoration: underline;
+  }
+
+  
+  .green-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+  
+  .green-btn:hover {
+    background-color: #218838;
+  }
+  

@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doelen Tracker</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mijn Categorieën</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>Mijn Doelen 🎯</h1>
-        <div class="input-container">
-            <input type="text" id="goal-input" placeholder="Nieuw doel toevoegen...">
-            <button id="add-goal">Toevoegen</button>
-        </div>
-        <ul id="goal-list"></ul>
-    </div>
+  <main class="container">
+    <h1>Mijn Categorieën 🎯</h1>
 
-    <script src="script.js"></script>
+    <section class="input-row">
+      <input type="text" id="category-input" placeholder="Bijv. Finance, Sport..." />
+      <button id="add-category">Categorie toevoegen</button>
+    </section>
+
+    <section id="category-list" class="card-list">
+      <!-- Hier komen de categorieknoppen -->
+    </section>
+  </main>
+
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,117 +1,154 @@
-document.addEventListener("DOMContentLoaded", loadGoals);
-
-const goalInput = document.getElementById("goal-input");
-const addGoalButton = document.getElementById("add-goal");
-const goalList = document.getElementById("goal-list");
-
-addGoalButton.addEventListener("click", addGoal);
-
-function addGoal() {
-    const goalText = goalInput.value.trim();
-    if (goalText === "") return;
-
-    const goalItem = createGoalElement(goalText, 0, "");
-    goalList.appendChild(goalItem);
-
-    saveGoal(goalText, 0, "");
-    goalInput.value = "";
-}
-
-function createGoalElement(text, progress, notes) {
-    const li = document.createElement("li");
-    li.innerHTML = `
-<span>${text}</span>
-<button class="delete-btn">🗑</button>
-<button class="toggle-progress-btn">Voortgang tonen</button>
-
-<input type="range" min="0" max="100" value="${progress}" class="progress-slider hidden">
-<div class="progress-container">
-    <div class="progress-bar" style="width: ${progress}%"></div>
-</div>
-<p>${progress}% voltooid</p>
-
-<button class="toggle-notes-btn">Toon aantekeningen</button>
-<textarea class="notes note-hidden" placeholder="Schrijf hier aantekeningen...">${notes}</textarea>
-`;
-
-    const progressBar = li.querySelector(".progress-bar");
-    const progressText = li.querySelector("p");
-    const slider = li.querySelector(".progress-slider");
-    const toggleProgressBtn = li.querySelector(".toggle-progress-btn");
-    const toggleNotesBtn = li.querySelector(".toggle-notes-btn");
-    const notesField = li.querySelector(".notes");
-
-    // Toggle voortgang
-    toggleProgressBtn.addEventListener("click", () => {
-        slider.classList.toggle("hidden");
-        toggleProgressBtn.textContent = slider.classList.contains("hidden") ? "Voortgang tonen" : "Verberg voortgang";
-    });
-
-    // Toggle aantekeningen
-    toggleNotesBtn.addEventListener("click", () => {
-        notesField.classList.toggle("note-hidden");
-        toggleNotesBtn.textContent = notesField.classList.contains("note-hidden") ? "Toon aantekeningen" : "Verberg aantekeningen";
-    });
-
-    // Update progress
-    slider.addEventListener("input", () => {
-        const value = slider.value;
-        progressBar.style.width = value + "%";
-        progressText.textContent = `${value}% voltooid`;
-
-        updateGoal(text, value, notesField.value);
-
-        if (value == 100) {
-            li.classList.add("completed");
-        } else {
-            li.classList.remove("completed");
-        }
-    });
-
-    // Notities opslaan
-    notesField.addEventListener("input", () => {
-        updateGoal(text, slider.value, notesField.value);
-    });
-
-    // Verwijder doel
-    li.querySelector(".delete-btn").addEventListener("click", () => {
-        removeGoal(text);
-        li.remove();
-    });
-
-    return li;
-}
-
-
-// Opslaan in localStorage
-function saveGoal(goal, progress, notes) {
-    let goals = JSON.parse(localStorage.getItem("goals")) || [];
-    goals.push({ text: goal, progress: progress, notes: notes });
-    localStorage.setItem("goals", JSON.stringify(goals));
-}
-
-// Laden van opgeslagen doelen
-function loadGoals() {
-    let goals = JSON.parse(localStorage.getItem("goals")) || [];
-    goals.forEach(goal => {
-        const goalItem = createGoalElement(goal.text, goal.progress, goal.notes);
-        goalList.appendChild(goalItem);
-    });
-}
-
-// Updaten van progress & notities in localStorage
-function updateGoal(goalText, progress, notes) {
-    let goals = JSON.parse(localStorage.getItem("goals")) || [];
-    goals = goals.map(goal =>
-        goal.text === goalText ? { ...goal, progress: progress, notes: notes } : goal
-    );
-    localStorage.setItem("goals", JSON.stringify(goals));
-}
-
-// Verwijderen van een doel
-function removeGoal(goalText) {
-    let goals = JSON.parse(localStorage.getItem("goals")) || [];
-    goals = goals.filter(goal => goal.text !== goalText);
-    localStorage.setItem("goals", JSON.stringify(goals));
-}
-
+document.addEventListener("DOMContentLoaded", () => {
+    const currentPage = window.location.pathname;
+  
+    if (currentPage.includes("index.html") || currentPage.endsWith("/")) {
+      // === Categorie-pagina ===
+      const categoryInput = document.getElementById("category-input");
+      const addCategoryBtn = document.getElementById("add-category");
+      const categoryList = document.getElementById("category-list");
+  
+      let categories = JSON.parse(localStorage.getItem("categories")) || [];
+  
+      function saveCategories() {
+        localStorage.setItem("categories", JSON.stringify(categories));
+      }
+  
+      function renderCategories() {
+        categoryList.innerHTML = "";
+        categories.forEach(cat => {
+          const btn = document.createElement("button");
+          btn.textContent = cat;
+          btn.addEventListener("click", () => {
+            window.location.href = `category.html?categorie=${encodeURIComponent(cat)}`;
+          });
+          categoryList.appendChild(btn);
+        });
+      }
+  
+      addCategoryBtn.addEventListener("click", () => {
+        const newCat = categoryInput.value.trim();
+        if (!newCat || categories.includes(newCat)) return;
+        categories.push(newCat);
+        saveCategories();
+        renderCategories();
+        categoryInput.value = "";
+      });
+  
+      renderCategories();
+  
+    } else if (currentPage.includes("category.html")) {
+      // === Doelen-pagina ===
+      const urlParams = new URLSearchParams(window.location.search);
+      const category = urlParams.get("categorie");
+      const categoryTitle = document.getElementById("category-title");
+      const goalInput = document.getElementById("goal-input");
+      const addGoalBtn = document.getElementById("add-goal");
+      const goalList = document.getElementById("goal-list");
+  
+      if (!category) {
+        location.href = "index.html";
+        return;
+      }
+  
+      categoryTitle.textContent = `Doelen voor "${category}"`;
+  
+      let storedGoals = JSON.parse(localStorage.getItem("goals")) || {};
+      if (!storedGoals[category]) storedGoals[category] = [];
+  
+      function saveGoals() {
+        localStorage.setItem("goals", JSON.stringify(storedGoals));
+      }
+  
+      function renderGoals() {
+        goalList.innerHTML = "";
+        storedGoals[category].forEach(goal => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <button class="delete-btn">🗑</button>
+            <strong>${goal.text}</strong>
+  
+            <button class="toggle-progress-btn">Pas voortgang aan</button>
+  
+            <div class="progress-slider-wrapper hidden">
+              <input type="range" min="0" max="100" value="${goal.progress}" class="progress-slider" />
+            </div>
+  
+            <div class="progress-container">
+              <div class="progress-bar" style="width: ${goal.progress}%"></div>
+            </div>
+            <p>${goal.progress}% voltooid</p>
+  
+            <button class="toggle-notes-btn">Toon aantekeningen</button>
+            <textarea class="notes hidden" placeholder="Schrijf hier je aantekeningen...">${goal.notes}</textarea>
+          `;
+  
+          const slider = li.querySelector(".progress-slider");
+          const progressBar = li.querySelector(".progress-bar");
+          const progressText = li.querySelector("p");
+          const deleteBtn = li.querySelector(".delete-btn");
+          const notesField = li.querySelector(".notes");
+          const toggleNotesBtn = li.querySelector(".toggle-notes-btn");
+          const toggleProgressBtn = li.querySelector(".toggle-progress-btn");
+          const progressSliderWrapper = li.querySelector(".progress-slider-wrapper");
+  
+          // === Voortgang aanpassen ===
+          slider.addEventListener("input", () => {
+            goal.progress = slider.value;
+            progressBar.style.width = `${goal.progress}%`;
+            progressText.textContent = `${goal.progress}% voltooid`;
+            saveGoals();
+  
+            if (parseInt(goal.progress) === 100) {
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+              });
+            }
+          });
+  
+          toggleProgressBtn.addEventListener("click", () => {
+            progressSliderWrapper.classList.toggle("hidden");
+            toggleProgressBtn.textContent = progressSliderWrapper.classList.contains("hidden")
+              ? "Pas voortgang aan"
+              : "Klaar";
+          });
+  
+          // === Aantekeningen ===
+          notesField.addEventListener("input", () => {
+            goal.notes = notesField.value;
+            saveGoals();
+          });
+  
+          toggleNotesBtn.addEventListener("click", () => {
+            notesField.classList.toggle("hidden");
+            toggleNotesBtn.textContent = notesField.classList.contains("hidden")
+              ? "Toon aantekeningen"
+              : "Verberg aantekeningen";
+          });
+  
+          // === Verwijderen ===
+          deleteBtn.addEventListener("click", () => {
+            storedGoals[category] = storedGoals[category].filter(g => g !== goal);
+            saveGoals();
+            renderGoals();
+          });
+  
+          goalList.appendChild(li);
+        });
+      }
+  
+      addGoalBtn.addEventListener("click", () => {
+        const text = goalInput.value.trim();
+        if (!text) return;
+        const newGoal = { text, progress: 0, notes: "" };
+        storedGoals[category].push(newGoal);
+        saveGoals();
+        renderGoals();
+        goalInput.value = "";
+      });
+  
+      renderGoals();
+    }
+  });
+  

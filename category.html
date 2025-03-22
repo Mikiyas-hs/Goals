@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mijn Doelen</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <button class="green-btn back-button" onclick="window.location.href='index.html'">← Terug naar categorieën</button>
+
+    <h1 id="category-title">Mijn Doelen 🎯</h1>
+
+    <section class="input-row">
+      <input type="text" id="goal-input" placeholder="Nieuw doel toevoegen..." />
+      <button id="add-goal">Toevoegen</button>
+    </section>
+
+    <ul id="goal-list"></ul>
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
