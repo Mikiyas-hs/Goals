@@ -270,3 +270,52 @@ h1 {
     background-color: #218838;
   }
   
+
+
+  .category-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  
+  .category-row .green-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: left;
+    font-size: 1rem;
+  }
+  
+  .category-row .green-btn:hover {
+    background: #218838;
+  }
+  
+  .category-row .delete-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 50%;
+    font-size: 16px;
+    margin-left: 12px;
+    cursor: pointer;
+    height: 36px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .category-row .delete-btn:hover {
+    background: darkred;
+  }
+  

@@ -16,12 +16,34 @@ document.addEventListener("DOMContentLoaded", () => {
       function renderCategories() {
         categoryList.innerHTML = "";
         categories.forEach(cat => {
+          const row = document.createElement("div");
+          row.classList.add("category-row");
+  
           const btn = document.createElement("button");
+          btn.classList.add("green-btn");
           btn.textContent = cat;
           btn.addEventListener("click", () => {
             window.location.href = `category.html?categorie=${encodeURIComponent(cat)}`;
           });
-          categoryList.appendChild(btn);
+  
+          const deleteBtn = document.createElement("button");
+          deleteBtn.classList.add("delete-btn");
+          deleteBtn.textContent = "🗑";
+          deleteBtn.addEventListener("click", (e) => {
+            e.stopPropagation(); // voorkomt dat categorie geopend wordt
+            categories = categories.filter(c => c !== cat);
+  
+            let allGoals = JSON.parse(localStorage.getItem("goals")) || {};
+            delete allGoals[cat];
+            localStorage.setItem("goals", JSON.stringify(allGoals));
+  
+            saveCategories();
+            renderCategories();
+          });
+  
+          row.appendChild(btn);
+          row.appendChild(deleteBtn);
+          categoryList.appendChild(row);
         });
       }
   
@@ -127,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
               : "Verberg aantekeningen";
           });
   
-          // === Verwijderen ===
+          // === Verwijderen doel ===
           deleteBtn.addEventListener("click", () => {
             storedGoals[category] = storedGoals[category].filter(g => g !== goal);
             saveGoals();
